@@ -15,6 +15,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.6.0"),
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
+        .package(url: "https://github.com/vapor/queues", from: "1.17.2"),
+        .package(url: "https://github.com/brokenhandsio/VaporSecurityHeaders.git", from: "4.0.0")
     ],
     targets: [
         .executableTarget(
@@ -25,6 +27,8 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
+                .product(name: "Queues", package: "queues"),
+                .product(name: "VaporSecurityHeaders", package: "VaporSecurityHeaders"),
             ],
             swiftSettings: swiftSettings
         ),

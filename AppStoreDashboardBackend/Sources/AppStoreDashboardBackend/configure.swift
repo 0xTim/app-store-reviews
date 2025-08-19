@@ -12,6 +12,15 @@ public func configure(_ app: Application) async throws {
 
     app.middleware.use(SecurityHeadersFactory.api().build(), at: .beginning)
 
+    guard let appID = Environment.get("APP_ID") else {
+        fatalError("APP_ID environment variable is not set")
+    }
+
+    let job = FetchReviewsJob(appID: appID)
+    app.queues.schedule(job).minutely().at(0)
+
+    try app.queues.startScheduledJobs()
+
     // register routes
     try routes(app)
 }

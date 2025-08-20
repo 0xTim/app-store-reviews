@@ -1,10 +1,11 @@
 import { ReviewCard } from '../components/ReviewCard';
 import { LoadingSpinner, LoadingCard } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
+import { LoadMoreButton } from '../components/LoadMoreButton';
 import { useReviews } from '../hooks/useReviews';
 
 export function AppStoreDashboard() {
-  const { reviews, loading, error, refetch } = useReviews();
+  const { reviews, loading, loadingMore, error, metadata, refetch, loadMore, hasMore } = useReviews();
 
   if (error) {
     return <ErrorMessage error={error} onRetry={refetch} />;
@@ -56,7 +57,8 @@ export function AppStoreDashboard() {
   const averageRating = reviews.length > 0 
     ? reviews.reduce((sum, review) => sum + review.score, 0) / reviews.length 
     : 0;
-  const totalReviews = reviews.length;
+  const totalReviews = metadata?.total || 0;
+  const loadedReviews = reviews.length;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -112,6 +114,24 @@ export function AppStoreDashboard() {
                 </p>
               </div>
             </div>
+            {totalReviews > loadedReviews && (
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-orange-100 dark:bg-orange-900 rounded-full">
+                  <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {loadedReviews}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Showing
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -131,11 +151,43 @@ export function AppStoreDashboard() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              {reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+            
+            {/* Load More Section */}
+            {hasMore && (
+              <LoadMoreButton
+                onLoadMore={loadMore}
+                loading={loadingMore}
+                disabled={loadingMore}
+              />
+            )}
+            
+            {/* Loading More Cards */}
+            {loadingMore && (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 mt-6">
+                {[...Array(4)].map((_, i) => (
+                  <LoadingCard key={`loading-${i}`} />
+                ))}
+              </div>
+            )}
+            
+            {/* Pagination Info */}
+            {metadata && (
+              <div className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
+                Showing {loadedReviews} of {totalReviews} reviews
+                {metadata.per && (
+                  <span className="ml-2">
+                    ({metadata.per} per page)
+                  </span>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -7,3 +7,14 @@ export interface Review {
   date: string;
   appStoreUrl: string;
 }
+
+export interface PaginationMetadata {
+  per: number;
+  page: number;
+  total: number;
+}
+
+export interface PaginatedReviewsResponse {
+  items: Review[];
+  metadata: PaginationMetadata;
+}

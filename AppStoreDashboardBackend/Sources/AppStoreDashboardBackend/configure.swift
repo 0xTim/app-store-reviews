@@ -18,6 +18,12 @@ public func configure(_ app: Application) async throws {
     try await app.autoMigrate()
 
     app.middleware.use(SecurityHeadersFactory.api().build(), at: .beginning)
+    let corsConfiguration = CORSMiddleware.Configuration(
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+    )
+    app.middleware.use(CORSMiddleware(configuration: corsConfiguration), at: .beginning)
 
     guard let appID = Environment.get("APP_ID") else {
         fatalError("APP_ID environment variable is not set")

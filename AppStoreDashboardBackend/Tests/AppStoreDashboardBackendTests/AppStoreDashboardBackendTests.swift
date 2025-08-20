@@ -72,7 +72,8 @@ struct AppStoreDashboardBackendTests {
             // We always scrape at least one page so there should be one more request since the reviews are older than the last
             // scraped date
             #expect(fakeClient.requests.count == 3)
-            #warning("Test URLS for JSON and not XML")
+            // Make sure we're only requesting JSON and not XML
+            #expect(fakeClient.requests.filter({ $0.url.string.contains("xml") }).count == 0)
         }
     }
 

@@ -34,5 +34,5 @@ public func configure(_ app: Application) async throws {
     try app.queues.startScheduledJobs()
 
     // register routes
-    try routes(app, reviewRepository: reviewRepository)
+    try routes(app, reviewRepository: reviewRepository, appDataRepository: appDataRepository)
 }

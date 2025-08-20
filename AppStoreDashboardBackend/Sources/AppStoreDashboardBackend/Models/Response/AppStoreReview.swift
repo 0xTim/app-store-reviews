@@ -68,7 +68,7 @@ struct Entry: Codable {
                                                    in: container,
                                                    debugDescription: "Rating is not an Int")
         }
-        let titleWrapper = try container.decode(LabelValue.self, forKey: .rating)
+        let titleWrapper = try container.decode(LabelValue.self, forKey: .title)
         self.title = titleWrapper.label
         self.rating = ratingInt
         self.content = try container.decode(ReviewContent.self, forKey: .content)

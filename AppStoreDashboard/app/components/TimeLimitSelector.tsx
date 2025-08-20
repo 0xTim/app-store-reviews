@@ -29,6 +29,11 @@ export const TIME_LIMIT_OPTIONS: TimeLimitOption[] = [
     value: 30 * 24 * 60 * 60, // 1 month in seconds
     label: '1 month',
     description: 'Reviews from the last month'
+  },
+  {
+    value: 6 * 30 * 24 * 60 * 60, // 6 months in seconds (approximately)
+    label: '6 months',
+    description: 'Reviews from the last 6 months'
   }
 ];
 

@@ -7,14 +7,3 @@ export interface Review {
   author: string;
   reviewLink: string;
 }
-
-export interface PaginationMetadata {
-  per: number;
-  page: number;
-  total: number;
-}
-
-export interface PaginatedReviewsResponse {
-  items: Review[];
-  metadata: PaginationMetadata;
-}

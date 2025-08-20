@@ -1,4 +1,5 @@
-import type { Review, PaginatedReviewsResponse } from '../types/Review';
+import type { Review } from '../types/Review';
+import type { PaginatedReviewsResponse } from '../types/PaginatedReviewsResponse';
 
 interface ApiConfig {
   baseUrl: string;

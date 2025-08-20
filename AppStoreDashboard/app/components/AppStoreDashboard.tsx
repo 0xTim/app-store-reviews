@@ -27,29 +27,20 @@ export function AppStoreDashboard() {
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               App Store Reviews Dashboard
             </h1>
-            <div className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 animate-pulse">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-                <div>
-                  <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
-                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-                <div>
-                  <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
-                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Time Limit Selector Skeleton */}
-          <div className="mb-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 animate-pulse">
-              <div className="h-4 w-20 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
-              <div className="h-10 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+              <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                  <div>
+                    <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
+                    <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                  </div>
+                </div>
+                <div className="flex-1 lg:max-w-xs">
+                  <div className="h-4 w-20 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
+                  <div className="h-10 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -64,7 +55,6 @@ export function AppStoreDashboard() {
   }
 
   const totalReviews = metadata?.total || 0;
-  const loadedReviews = reviews.length;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -74,51 +64,34 @@ export function AppStoreDashboard() {
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             App Store Reviews Dashboard
           </h1>
-          <div className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
-                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {totalReviews}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Total Reviews
-                </p>
-              </div>
-            </div>
-            {totalReviews > loadedReviews && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              {/* Total Reviews */}
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-orange-100 dark:bg-orange-900 rounded-full">
-                  <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
+                  <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {loadedReviews}
+                    {totalReviews}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Showing
+                    Total Reviews
                   </p>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Time Limit Selector */}
-        <div className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-            <TimeLimitSelector
-              selectedTimeLimit={selectedTimeLimit}
-              onTimeLimitChange={handleTimeLimitChange}
-              disabled={loading || loadingMore}
-            />
+              
+              {/* Time Range Selector */}
+              <div className="lg:max-w-xs lg:ml-auto">
+                <TimeLimitSelector
+                  selectedTimeLimit={selectedTimeLimit}
+                  onTimeLimitChange={handleTimeLimitChange}
+                  disabled={loading || loadingMore}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -166,7 +139,7 @@ export function AppStoreDashboard() {
             {/* Pagination Info */}
             {metadata && (
               <div className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
-                Showing {loadedReviews} of {totalReviews} reviews
+                {totalReviews} reviews found
                 {metadata.per && (
                   <span className="ml-2">
                     ({metadata.per} per page)

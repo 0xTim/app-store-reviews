@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { Review, PaginationMetadata } from '../types/Review';
+import type { Review } from '../types/Review';
+import type { PaginationMetadata } from '../types/PaginationMetadata';
 import { apiService } from '../services/ApiService';
 
 interface UseReviewsResult {

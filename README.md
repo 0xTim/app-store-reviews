@@ -8,7 +8,7 @@ Here's the app in action:
 
 ![App Store Reviews Dashboard Screenshot](demo.png)
 
-https://github.com/user-attachments/assets/demo.mov
+https://github.com/0xTim/app-store-reviews/blob/main/demo.mov
 
 ## Architecture Overview
 

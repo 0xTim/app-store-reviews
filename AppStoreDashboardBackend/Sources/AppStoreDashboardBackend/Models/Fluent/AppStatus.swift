@@ -10,10 +10,14 @@ final class AppStatus: Model, @unchecked Sendable {
     @Field(key: v20250819.lastScrapedDate)
     var lastScrapedDate: Date
 
+    @Field(key: v20250819.appId)
+    var appId: String
+
     init() { }
 
-    init(id: String? = nil, lastScrapedDate: Date) {
+    init(id: String? = nil, lastScrapedDate: Date, appId: String) {
         self.id = id
         self.lastScrapedDate = lastScrapedDate
+        self.appId = appId
     }
 }

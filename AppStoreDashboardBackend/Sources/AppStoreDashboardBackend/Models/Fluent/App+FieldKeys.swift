@@ -17,5 +17,6 @@ extension AppStatus {
         static let schema = "app_status"
         static let id = FieldKey("id")
         static let lastScrapedDate = FieldKey("last_scraped_date")
+        static let appId = FieldKey("app_id")
     }
 }

@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:app-store-dashboard}/AppStoreDashboardBackend",
+            "name": "Debug AppStoreDashboardBackend (AppStoreDashboardBackend)",
+            "program": "${workspaceFolder:app-store-dashboard}/AppStoreDashboardBackend/.build/debug/AppStoreDashboardBackend",
+            "preLaunchTask": "swift: Build Debug AppStoreDashboardBackend (AppStoreDashboardBackend)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:app-store-dashboard}/AppStoreDashboardBackend",
+            "name": "Release AppStoreDashboardBackend (AppStoreDashboardBackend)",
+            "program": "${workspaceFolder:app-store-dashboard}/AppStoreDashboardBackend/.build/release/AppStoreDashboardBackend",
+            "preLaunchTask": "swift: Build Release AppStoreDashboardBackend (AppStoreDashboardBackend)"
+        }
+    ]
+}

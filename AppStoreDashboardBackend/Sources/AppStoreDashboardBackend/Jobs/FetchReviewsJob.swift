@@ -47,7 +47,7 @@ struct FetchReviewsJob: AsyncScheduledJob {
                 logger.warning("Could not convert review date from ISO8601", metadata: ["reviewDate": "\(review.updated.label)", "reviewID": "\(review.id.label)"])
                 continue
             }
-            let reviewModel = Review(id: id, content: review.content.label, score: score, reviewDate: date, author: review.author.name.label, reviewLink: review.link.attributes.href)
+            let reviewModel = Review(id: id, content: review.content.label, score: score, reviewDate: date, author: review.author.name.label, reviewLink: review.link.attributes.href, appID: self.appID)
             try await reviewRepository.save(reviewModel)
         }
 

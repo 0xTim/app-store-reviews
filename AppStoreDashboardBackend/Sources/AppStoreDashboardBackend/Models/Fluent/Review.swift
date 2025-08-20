@@ -22,15 +22,19 @@ final class Review: Model, @unchecked Sendable {
     @Field(key: v20250819.reviewLink)
     var reviewLink: String
 
+    @Field(key: v20250819.appID)
+    var appID: String
+
     init() { }
 
-    init(id: Int, content: String, score: Int, reviewDate: Date, author: String, reviewLink: String) {
+    init(id: Int, content: String, score: Int, reviewDate: Date, author: String, reviewLink: String, appID: String) {
         self.id = id
         self.content = content
         self.score = score
         self.reviewDate = reviewDate
         self.author = author
         self.reviewLink = reviewLink
+        self.appID = appID
     }
     
 //    func toDTO() -> TodoDTO {

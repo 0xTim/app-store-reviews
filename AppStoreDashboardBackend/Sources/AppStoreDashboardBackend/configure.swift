@@ -14,6 +14,9 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateReview())
     app.migrations.add(CreateAppStatus())
 
+    // Run the migrations before we try and do any actual work
+    try await app.autoMigrate()
+
     app.middleware.use(SecurityHeadersFactory.api().build(), at: .beginning)
 
     guard let appID = Environment.get("APP_ID") else {
@@ -30,6 +33,4 @@ public func configure(_ app: Application) async throws {
 
     // register routes
     try routes(app)
-
-    try await app.autoMigrate()
 }

@@ -1,11 +1,10 @@
 export interface Review {
-  id: string;
-  title: string;
+  id: number;
   content: string;
-  author: string;
   score: number; // 1-5 stars
-  date: string;
-  appStoreUrl: string;
+  reviewDate: string; // ISO date string
+  author: string;
+  reviewLink: string;
 }
 
 export interface PaginationMetadata {

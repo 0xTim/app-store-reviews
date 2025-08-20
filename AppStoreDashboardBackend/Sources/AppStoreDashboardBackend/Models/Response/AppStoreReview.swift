@@ -28,7 +28,7 @@ struct Entry: Codable {
     let rating: Int
     let version: LabelValue
     let id: Int
-    let title: LabelValue
+    let title: String
     let content: ReviewContent
     let link: Link
     let voteSum: LabelValue
@@ -68,6 +68,8 @@ struct Entry: Codable {
                                                    in: container,
                                                    debugDescription: "Rating is not an Int")
         }
+        let titleWrapper = try container.decode(LabelValue.self, forKey: .rating)
+        self.title = titleWrapper.label
         self.rating = ratingInt
         self.title = try container.decode(LabelValue.self, forKey: .title)
         self.content = try container.decode(ReviewContent.self, forKey: .content)

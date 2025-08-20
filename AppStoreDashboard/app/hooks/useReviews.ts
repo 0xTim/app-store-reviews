@@ -11,17 +11,19 @@ interface UseReviewsResult {
   refetch: () => Promise<void>;
   loadMore: () => Promise<void>;
   hasMore: boolean;
+  updateTimeLimit: (timeLimit: number) => Promise<void>;
 }
 
-export function useReviews(appId?: string): UseReviewsResult {
+export function useReviews(appId?: string, initialTimeLimit?: number): UseReviewsResult {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<PaginationMetadata | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [timeLimit, setTimeLimit] = useState<number | undefined>(initialTimeLimit);
 
-  const fetchReviews = async (page: number = 1, append: boolean = false) => {
+  const fetchReviews = async (page: number = 1, append: boolean = false, newTimeLimit?: number) => {
     try {
       if (page === 1) {
         setLoading(true);
@@ -30,7 +32,8 @@ export function useReviews(appId?: string): UseReviewsResult {
       }
       setError(null);
       
-      const data = await apiService.getReviews(appId, page);
+      const currentTimeLimit = newTimeLimit !== undefined ? newTimeLimit : timeLimit;
+      const data = await apiService.getReviews(appId, page, currentTimeLimit);
       
       if (append) {
         setReviews(prev => [...prev, ...data.items]);
@@ -61,6 +64,12 @@ export function useReviews(appId?: string): UseReviewsResult {
     await fetchReviews(1, false);
   };
 
+  const updateTimeLimit = async (newTimeLimit: number) => {
+    setTimeLimit(newTimeLimit);
+    setCurrentPage(1);
+    await fetchReviews(1, false, newTimeLimit);
+  };
+
   useEffect(() => {
     fetchReviews();
   }, [appId]);
@@ -75,6 +84,7 @@ export function useReviews(appId?: string): UseReviewsResult {
     metadata,
     refetch,
     loadMore,
-    hasMore
+    hasMore,
+    updateTimeLimit
   };
 }

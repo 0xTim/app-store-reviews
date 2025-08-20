@@ -15,9 +15,13 @@ export class ApiService {
     };
   }
 
-  async getReviews(appId?: string, page: number = 1): Promise<PaginatedReviewsResponse> {
+  async getReviews(appId?: string, page: number = 1, timeLimit?: number): Promise<PaginatedReviewsResponse> {
     const targetAppId = appId || this.config.defaultAppId;
-    const url = `${this.config.baseUrl}/apps/${targetAppId}/reviews?page=${page}`;
+    let url = `${this.config.baseUrl}/apps/${targetAppId}/reviews?page=${page}`;
+    
+    if (timeLimit !== undefined) {
+      url += `&timeLimit=${timeLimit}`;
+    }
 
     try {
       const response = await fetch(url, {
@@ -60,7 +64,7 @@ export class ApiService {
         }
 
         // Validate required fields
-        const requiredFields = ['id', 'title', 'content', 'author', 'score', 'date', 'appStoreUrl'];
+        const requiredFields = ['id', 'content', 'author', 'score', 'reviewDate', 'reviewLink'];
         for (const field of requiredFields) {
           if (!(field in item)) {
             throw new Error(`Invalid review at index ${index}: missing required field '${field}'`);
@@ -72,14 +76,17 @@ export class ApiService {
           throw new Error(`Invalid review at index ${index}: score must be a number between 1 and 5`);
         }
 
+        if (typeof item.id !== 'number') {
+          throw new Error(`Invalid review at index ${index}: id must be a number`);
+        }
+
         return {
-          id: String(item.id),
-          title: String(item.title),
+          id: Number(item.id),
           content: String(item.content),
           author: String(item.author),
           score: Number(item.score),
-          date: String(item.date),
-          appStoreUrl: String(item.appStoreUrl)
+          reviewDate: String(item.reviewDate),
+          reviewLink: String(item.reviewLink)
         };
       });
 

@@ -14,22 +14,35 @@ export function ReviewCard({ review }: ReviewCardProps) {
     });
   };
 
+  // Generate a title from the content (first sentence or first 60 characters)
+  const generateTitle = (content: string) => {
+    // Try to get the first sentence
+    const firstSentence = content.split(/[.!?]+/)[0];
+    if (firstSentence && firstSentence.length <= 80) {
+      return firstSentence.trim() + (content.includes('.') || content.includes('!') || content.includes('?') ? '.' : '...');
+    }
+    // Fallback to first 60 characters
+    return content.length > 60 ? content.substring(0, 60) + '...' : content;
+  };
+
+  const title = generateTitle(review.content);
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-lg">
       <div className="flex justify-between items-start mb-3">
         <a
-          href={review.appStoreUrl}
+          href={review.reviewLink}
           target="_blank"
           rel="noopener noreferrer"
           className="text-lg font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors duration-200 flex-1 mr-4"
         >
-          {review.title}
+          {title}
         </a>
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          {formatDate(review.date)}
+          {formatDate(review.reviewDate)}
         </div>
       </div>
       
@@ -49,7 +62,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
       
       <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
         <a
-          href={review.appStoreUrl}
+          href={review.reviewLink}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200"

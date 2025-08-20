@@ -25,6 +25,8 @@ final class Review: Model, @unchecked Sendable {
     @Field(key: v20250819.appID)
     var appID: String
 
+    @Field(
+
     init() { }
 
     init(id: Int, content: String, score: Int, reviewDate: Date, author: String, reviewLink: String, appID: String) {

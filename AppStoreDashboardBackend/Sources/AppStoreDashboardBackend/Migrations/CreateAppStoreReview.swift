@@ -11,6 +11,7 @@ struct CreateReview: AsyncMigration {
             .field(Review.v20250819.author, .string, .required)
             .field(Review.v20250819.reviewLink, .string, .required)
             .field(Review.v20250819.appID, .string, .required)
+            .field(Review.v20250819.title, .string, .required)
             .create()
 
         // Add an index to the table on `app_id` since it will be frequently queried

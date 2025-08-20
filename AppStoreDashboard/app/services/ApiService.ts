@@ -64,7 +64,7 @@ export class ApiService {
         }
 
         // Validate required fields
-        const requiredFields = ['id', 'content', 'author', 'score', 'reviewDate', 'reviewLink'];
+        const requiredFields = ['id', 'title', 'content', 'author', 'score', 'reviewDate', 'reviewLink'];
         for (const field of requiredFields) {
           if (!(field in item)) {
             throw new Error(`Invalid review at index ${index}: missing required field '${field}'`);
@@ -82,6 +82,7 @@ export class ApiService {
 
         return {
           id: Number(item.id),
+          title: String(item.title),
           content: String(item.content),
           author: String(item.author),
           score: Number(item.score),

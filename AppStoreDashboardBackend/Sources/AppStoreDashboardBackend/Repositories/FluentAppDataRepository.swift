@@ -9,6 +9,7 @@ struct FluentAppDataRepository: AppDataRepository {
     }
 
     func saveLastScrapedDate(appId: String, date: Date) async throws {
+        // This is essentially an upsert which Fluent doesn't support directly.
         if let appStatus = try await AppStatus.query(on: database).filter(\.$appId == appId).first() {
             appStatus.lastScrapedDate = date
             try await appStatus.update(on: database)

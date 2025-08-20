@@ -24,13 +24,13 @@ public func configure(_ app: Application) async throws {
     }
 
     let job = FetchReviewsJob(appID: appID)
-    app.queues.schedule(job).minutely().at(0)
 
     // Do an initial scrape so we have some data on app start
     let reviewRepository = FluentReviewRepository(database: app.db, logger: app.logger)
     let appDataRepository = FluentAppDataRepository(database: app.db)
     try await job.getLatestReviews(client: app.client, logger: app.logger, reviewRepository: reviewRepository, appDataRepository: appDataRepository)
 
+    app.queues.schedule(job).minutely().at(0)
     try app.queues.startScheduledJobs()
 
     // register routes

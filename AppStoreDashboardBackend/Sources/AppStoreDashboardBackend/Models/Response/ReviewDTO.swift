@@ -1,5 +1,6 @@
 import Vapor
 
+// Represents a DTO for a Review as returned by the API
 struct ReviewDTO: Content {
     let id: Int
     let content: String

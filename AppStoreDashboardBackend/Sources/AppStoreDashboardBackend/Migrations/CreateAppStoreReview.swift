@@ -3,9 +3,6 @@ import FluentSQL
 
 struct CreateReview: AsyncMigration {
     func prepare(on database: any Database) async throws {
-        guard let sqlDatabase = database as? any SQLDatabase else {
-            fatalError("Not an SQL Database")
-        }
         try await database.schema(Review.v20250819.schema)
             .field(Review.v20250819.id, .int, .identifier(auto: false))
             .field(Review.v20250819.content, .string, .required)
@@ -16,6 +13,10 @@ struct CreateReview: AsyncMigration {
             .field(Review.v20250819.appID, .string, .required)
             .create()
 
+        // Add an index to the table on `app_id` since it will be frequently queried
+        guard let sqlDatabase = database as? any SQLDatabase else {
+            fatalError("Not an SQL Database")
+        }
         try await sqlDatabase.create(index: "app_id_index")
             .on(Review.v20250819.schema)
             .column(Review.v20250819.appID.description)

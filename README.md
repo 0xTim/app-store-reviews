@@ -2,6 +2,14 @@
 
 A full-stack application that retrieves and displays App Store reviews for iOS applications. 
 
+## Demo
+
+Here's the app in action:
+
+![App Store Reviews Dashboard Screenshot](demo.png)
+
+https://github.com/user-attachments/assets/demo.mov
+
 ## Architecture Overview
 
 This application consists of two main components working together:

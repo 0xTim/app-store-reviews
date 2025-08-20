@@ -65,7 +65,7 @@ struct FetchReviewsJob: AsyncScheduledJob {
         }
 
         for review in filteredReviews {
-            let reviewModel = Review(id: review.id, content: review.content.label, score: review.rating, reviewDate: review.updated, author: review.author.name, reviewLink: review.link.attributes.href, appID: self.appID)
+            let reviewModel = Review(id: review.id, content: review.content.label, score: review.rating, reviewDate: review.updated, author: review.author.name, reviewLink: review.link.attributes.href, appID: self.appID, title: review.title)
             try await reviewRepository.save(reviewModel)
         }
 

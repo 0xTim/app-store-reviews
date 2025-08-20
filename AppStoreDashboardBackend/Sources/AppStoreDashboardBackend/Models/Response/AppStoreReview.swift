@@ -47,7 +47,7 @@ struct Entry: Codable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.author = try container.decode(EntryAuthor.self, forKey: .author)
-        // Updated, ID, and Rating are wrapped in a LabelValue struct, which isn't nice to use so flatten it here
+        // Updated, Title, ID, and Rating are wrapped in a LabelValue struct, which isn't nice to use so flatten it here
         let updatedWrapper = try container.decode(LabelValue.self, forKey: .updated)
         guard let updatedDate = ISO8601DateFormatter().date(from: updatedWrapper.label) else {
             throw DecodingError.dataCorruptedError(forKey: .updated,
@@ -71,7 +71,6 @@ struct Entry: Codable {
         let titleWrapper = try container.decode(LabelValue.self, forKey: .rating)
         self.title = titleWrapper.label
         self.rating = ratingInt
-        self.title = try container.decode(LabelValue.self, forKey: .title)
         self.content = try container.decode(ReviewContent.self, forKey: .content)
         self.link = try container.decode(Link.self, forKey: .link)
         self.version = try container.decode(LabelValue.self, forKey: .version)

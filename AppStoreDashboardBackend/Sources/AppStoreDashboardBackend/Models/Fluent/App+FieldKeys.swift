@@ -10,6 +10,7 @@ extension Review {
         static let author = FieldKey("author")
         static let reviewLink = FieldKey("review_link")
         static let appID = FieldKey("app_id")
+        static let title = FieldKey("title")
     }
 }
 

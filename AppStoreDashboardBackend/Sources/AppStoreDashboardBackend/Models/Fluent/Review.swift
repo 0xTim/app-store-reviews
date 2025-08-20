@@ -25,11 +25,12 @@ final class Review: Model, @unchecked Sendable {
     @Field(key: v20250819.appID)
     var appID: String
 
-    @Field(
+    @Field(key: v20250819.title)
+    var title: String
 
     init() { }
 
-    init(id: Int, content: String, score: Int, reviewDate: Date, author: String, reviewLink: String, appID: String) {
+    init(id: Int, content: String, score: Int, reviewDate: Date, author: String, reviewLink: String, appID: String, title: String) {
         self.id = id
         self.content = content
         self.score = score
@@ -37,6 +38,7 @@ final class Review: Model, @unchecked Sendable {
         self.author = author
         self.reviewLink = reviewLink
         self.appID = appID
+        self.title = title
     }
     
     func toDTO() throws -> ReviewDTO {
@@ -46,7 +48,8 @@ final class Review: Model, @unchecked Sendable {
             score: self.score,
             reviewDate: self.reviewDate,
             author: self.author,
-            reviewLink: self.reviewLink
+            reviewLink: self.reviewLink,
+            title: self.title,
         )
     }
 }

@@ -8,4 +8,5 @@ struct ReviewDTO: Content {
     let reviewDate: Date
     let author: String
     let reviewLink: String
+    let title: String
 }

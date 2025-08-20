@@ -48,7 +48,7 @@ struct FetchReviewsJob: AsyncScheduledJob {
             nextLinkComponents.path = nextLinkComponents.path.replacingOccurrences(of: "xml", with: "json")
             nextLink = nextLinkComponents.string!
 
-            if let lastUpdated, let lastReview = reviews.last, lastReview.updated >= lastUpdated {
+            if let lastUpdated, let lastReview = reviews.last, lastUpdated > lastReview.updated {
                 olderReviewsToScrape = false
             }
         }

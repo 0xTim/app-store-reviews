@@ -37,10 +37,14 @@ final class Review: Model, @unchecked Sendable {
         self.appID = appID
     }
     
-//    func toDTO() -> TodoDTO {
-//        .init(
-//            id: self.id,
-//            title: self.$content.value
-//        )
-//    }
+    func toDTO() throws -> ReviewDTO {
+        try .init(
+            id: self.requireID(),
+            content: self.content,
+            score: self.score,
+            reviewDate: self.reviewDate,
+            author: self.author,
+            reviewLink: self.reviewLink
+        )
+    }
 }

@@ -20,5 +20,13 @@ struct FluentReviewRepository: ReviewRepository {
             throw error
         }
     }
+
+    func getAllReviewsPaginated(appId: String, page: Int, limit: Int) async throws -> Page<Review> {
+        try await Review.query(on: database)
+            .filter(\.$appID == appId)
+            .sort(\.$reviewDate, .descending)
+            .page(withIndex: page, size: limit)
+            .get()
+    }
 }
 

@@ -1,9 +1,62 @@
-import { dummyReviews } from '../data/reviews';
 import { ReviewCard } from '../components/ReviewCard';
+import { LoadingSpinner, LoadingCard } from '../components/LoadingSpinner';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { useReviews } from '../hooks/useReviews';
 
 export function AppStoreDashboard() {
-  const averageRating = dummyReviews.reduce((sum, review) => sum + review.score, 0) / dummyReviews.length;
-  const totalReviews = dummyReviews.length;
+  const { reviews, loading, error, refetch } = useReviews();
+
+  if (error) {
+    return <ErrorMessage error={error} onRetry={refetch} />;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              App Store Reviews Dashboard
+            </h1>
+            <div className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 animate-pulse">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                <div>
+                  <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                <div>
+                  <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                <div>
+                  <div className="h-8 w-16 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            {[...Array(6)].map((_, i) => (
+              <LoadingCard key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const averageRating = reviews.length > 0 
+    ? reviews.reduce((sum, review) => sum + review.score, 0) / reviews.length 
+    : 0;
+  const totalReviews = reviews.length;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -22,7 +75,7 @@ export function AppStoreDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {averageRating.toFixed(1)}
+                  {averageRating > 0 ? averageRating.toFixed(1) : '–'}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Average Rating
@@ -52,7 +105,7 @@ export function AppStoreDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {dummyReviews.filter(r => r.score >= 4).length}
+                  {reviews.filter(r => r.score >= 4).length}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Positive Reviews
@@ -63,11 +116,27 @@ export function AppStoreDashboard() {
         </div>
 
         {/* Reviews Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          {dummyReviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
-        </div>
+        {reviews.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="mx-auto flex items-center justify-center w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
+              <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              No Reviews Found
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              There are currently no reviews available for this app.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            {reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

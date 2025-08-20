@@ -1,18 +1,20 @@
-# Welcome to React Router!
+# App Store Reviews Dashboard
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+A modern React dashboard for displaying and managing App Store reviews, built with React Router, TypeScript, and TailwindCSS.
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- 🚀 **Server-side rendering** with React Router
+- ⚡️ **Hot Module Replacement** (HMR) for fast development
+- 📦 **Asset bundling and optimization**
+- 🔄 **API integration** for fetching reviews
+- 🎨 **Responsive design** with dark mode support
+- ⭐ **Interactive star ratings** display
+- 🔒 **TypeScript** for type safety
+- 🎉 **TailwindCSS** for modern styling
+- � **Dashboard analytics** with summary statistics
+- 🚨 **Error handling** with user-friendly error messages
+- ⌛ **Loading states** with skeleton components
 
 ## Getting Started
 
@@ -24,9 +26,16 @@ Install the dependencies:
 npm install
 ```
 
+### Environment Setup
+
+There are a couple of environment variables you can set for the app:
+
+* `API_BASE_URL`: The base URL for the API server
+* `DEFAULT_APP_ID`: The default app ID to fetch reviews from the API
+
 ### Development
 
-Start the development server with HMR:
+Start the development server:
 
 ```bash
 npm run dev
@@ -34,12 +43,44 @@ npm run dev
 
 Your application will be available at `http://localhost:5173`.
 
+### Error Handling
+
+The dashboard handles various error scenarios:
+- **Network errors**: When the API server is unreachable
+- **HTTP errors**: When the API returns error status codes
+- **Data validation errors**: When the API returns invalid data format
+- **JSON parsing errors**: When the API returns malformed JSON
+
+All errors display user-friendly messages with retry options.
+
 ## Building for Production
 
 Create a production build:
 
 ```bash
 npm run build
+```
+
+## Project Structure
+
+```
+app/
+├── components/          # Reusable UI components
+│   ├── AppStoreDashboard.tsx
+│   ├── ReviewCard.tsx
+│   ├── StarRating.tsx
+│   ├── LoadingSpinner.tsx
+│   └── ErrorMessage.tsx
+├── hooks/              # Custom React hooks
+│   └── useReviews.ts
+├── services/           # API services
+│   └── ApiService.ts
+├── types/              # TypeScript type definitions
+│   └── Review.ts
+├── data/               # Static data (now deprecated)
+│   └── reviews.ts
+└── routes/             # Route components
+    └── home.tsx
 ```
 
 ## Deployment

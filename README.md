@@ -27,4 +27,10 @@ This application consists of two main components working together:
 
 ## Getting Started
 
-Each project has its own README explaining how to run.
+Each project has its own README explaining how to run. However there's a Docker Compose file to demo to tie it all together. To run:
+
+```bash
+docker compose up --build
+```
+
+Then open your browser and navigate to `http://localhost:3000` to access the frontend dashboard.

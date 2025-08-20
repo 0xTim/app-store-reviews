@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./AppStoreDashboardBackend
+      dockerfile: Dockerfile
+    container_name: app-store-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ID=595068606
+    volumes:
+      - ./AppStoreDashboardBackend/db.sqlite:/app/db.sqlite
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./AppStoreDashboard
+      dockerfile: Dockerfile
+    container_name: app-store-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - API_BASE_URL=http://app-store-backend:8080
+      - DEFAULT_APP_ID=595068606
+      - PORT=3000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge

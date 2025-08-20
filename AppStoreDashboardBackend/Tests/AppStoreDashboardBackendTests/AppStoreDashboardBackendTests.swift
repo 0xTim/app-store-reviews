@@ -16,7 +16,8 @@ struct AppStoreDashboardBackendTests {
             fakeClient.queuedResponses = [firstPageResponse, lastPageResponse]
 
             try await FetchReviewsJob(appID: appID).getLatestReviews(client: app.client, logger: app.logger, reviewRepository: reviewRepository, appDataRepository: appData)
-            #expect(appData.lastScrapedDates[appID] == Date())
+            let lastScrapedDate = try #require(appData.lastScrapedDates[appID])
+            #expect((Date().timeIntervalSince1970 - lastScrapedDate.timeIntervalSince1970) < 1)
         }
     }
 

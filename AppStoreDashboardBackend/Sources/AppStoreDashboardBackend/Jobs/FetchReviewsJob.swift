@@ -5,7 +5,7 @@ struct FetchReviewsJob: AsyncScheduledJob {
     let appID: String
 
     func run(context: QueueContext) async throws {
-        let repository = FluentReviewRepository(database: context.application.db)
+        let repository = FluentReviewRepository(database: context.application.db, logger: context.logger)
         try await getLatestReviews(client: context.application.client, logger: context.logger, repository: repository)
     }
 
@@ -17,7 +17,8 @@ struct FetchReviewsJob: AsyncScheduledJob {
             throw Abort(.internalServerError, reason: "Failed to fetch reviews from iTunes")
         }
         // Need to handle next pages of ratings I don't have
-        let reviews = try response.content.decode(FeedResponse.self)
+        // Need to handle pagination if there are more reviews than the first page
+        let reviews = try response.content.decode(FeedResponse.self, as: .json)
         for review in reviews.feed.entry {
             guard let id = Int(review.id.label) else {
                 logger.warning("Could not convert review ID to Int", metadata: ["reviewID": "\(review.id.label)"])

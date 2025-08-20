@@ -6,6 +6,9 @@ import VaporSecurityHeaders
 
 // configures your application
 public func configure(_ app: Application) async throws {
+    if app.environment == .development {
+        app.logger.logLevel = .debug
+    }
     app.databases.use(DatabaseConfigurationFactory.sqlite(.file("db.sqlite")), as: .sqlite)
 
     app.migrations.add(CreateReview())
@@ -23,4 +26,6 @@ public func configure(_ app: Application) async throws {
 
     // register routes
     try routes(app)
+
+    try await app.autoMigrate()
 }

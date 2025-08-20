@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 
 final class Review: Model, @unchecked Sendable {
-    static let schema = "reviews"
+    static let schema = v20250819.schema
 
     @ID(custom: v20250819.id, generatedBy: .user)
     var id: Int?
@@ -10,16 +10,16 @@ final class Review: Model, @unchecked Sendable {
     @Field(key: v20250819.content)
     var content: String
 
-    @Field(key: "score")
+    @Field(key: v20250819.score)
     var score: Int
 
-    @Field(key: "review_date")
+    @Field(key: v20250819.reviewDate)
     var reviewDate: Date
 
-    @Field(key: "author")
+    @Field(key: v20250819.author)
     var author: String
 
-    @Field(key: "review_link")
+    @Field(key: v20250819.reviewLink)
     var reviewLink: String
 
     init() { }

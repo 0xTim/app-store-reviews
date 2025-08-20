@@ -1,10 +1,10 @@
 import Fluent
 import Vapor
 
-func routes(_ app: Application) throws {
+func routes(_ app: Application, reviewRepository: any ReviewRepository) throws {
     app.get("hc") { req async in
         "OK"
     }
 
-    try app.register(collection: ReviewController())
+    try app.register(collection: ReviewController(reviewRepository: reviewRepository))
 }

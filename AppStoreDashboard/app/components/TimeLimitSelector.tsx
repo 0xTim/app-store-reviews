@@ -65,7 +65,7 @@ export function TimeLimitSelector({
         >
           {TIME_LIMIT_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
-              {option.label} - {option.description}
+              {option.label}
             </option>
           ))}
         </select>

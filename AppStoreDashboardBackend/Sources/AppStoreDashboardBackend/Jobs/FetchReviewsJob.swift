@@ -73,7 +73,7 @@ struct FetchReviewsJob: AsyncScheduledJob {
         try await appDataRepository.saveLastScrapedDate(appId: appID, date: Date())
     }
 
-    func getReviewsFromAPI(url: String, client: any Client, logger: Logger) async throws -> FeedResponse {
+    fileprivate func getReviewsFromAPI(url: String, client: any Client, logger: Logger) async throws -> FeedResponse {
         let response = try await client.get(URI(string: url))
         guard response.status == .ok else {
             logger.error(

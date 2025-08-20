@@ -5,77 +5,41 @@ import Fluent
 
 @Suite("App Tests with DB", .serialized)
 struct AppStoreDashboardBackendTests {
-    private func withApp(_ test: (Application) async throws -> ()) async throws {
-        let app = try await Application.make(.testing)
-        do {
-            try await configure(app)
-            try await app.autoMigrate()
-            try await test(app)
-            try await app.autoRevert()
-        } catch {
-            try? await app.autoRevert()
-            try await app.asyncShutdown()
-            throw error
-        }
-        try await app.asyncShutdown()
-    }
-    
-    @Test("Test Hello World Route")
-    func helloWorld() async throws {
-        try await withApp { app in
-            try await app.testing().test(.GET, "hello", afterResponse: { res async in
-                #expect(res.status == .ok)
-                #expect(res.body.string == "Hello, world!")
-            })
-        }
-    }
-    
-    @Test("Getting all the Todos")
-    func getAllTodos() async throws {
-        try await withApp { app in
-            let sampleTodos = [Todo(title: "sample1"), Todo(title: "sample2")]
-            try await sampleTodos.create(on: app.db)
-            
-            try await app.testing().test(.GET, "todos", afterResponse: { res async throws in
-                #expect(res.status == .ok)
-                #expect(try res.content.decode([TodoDTO].self) == sampleTodos.map { $0.toDTO()} )
-            })
-        }
-    }
-    
-    @Test("Creating a Todo")
-    func createTodo() async throws {
-        let newDTO = TodoDTO(id: nil, title: "test")
-        
-        try await withApp { app in
-            try await app.testing().test(.POST, "todos", beforeRequest: { req in
-                try req.content.encode(newDTO)
-            }, afterResponse: { res async throws in
-                #expect(res.status == .ok)
-                let models = try await Todo.query(on: app.db).all()
-                #expect(models.map({ $0.toDTO().title }) == [newDTO.title])
-            })
-        }
-    }
-    
-    @Test("Deleting a Todo")
-    func deleteTodo() async throws {
-        let testTodos = [Todo(title: "test1"), Todo(title: "test2")]
-        
-        try await withApp { app in
-            try await testTodos.create(on: app.db)
-            
-            try await app.testing().test(.DELETE, "todos/\(testTodos[0].requireID())", afterResponse: { res async throws in
-                #expect(res.status == .noContent)
-                let model = try await Todo.find(testTodos[0].id, on: app.db)
-                #expect(model == nil)
-            })
-        }
-    }
-}
+    let fakeClient = FakeClient()
+    let appData = FakeAppDataRepository()
+    let reviewRepository = FakeReviewRepository()
+    let appID = "595068606"
 
-extension TodoDTO: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id && lhs.title == rhs.title
+    @Test("Test scraping works")
+    func testScraping() async throws {
+        try await withApp(configure: configureForTests) { app in
+            fakeClient.queuedResponses = [firstPageResponse, lastPageResponse]
+
+            try await FetchReviewsJob(appID: appID).getLatestReviews(client: app.client, logger: app.logger, reviewRepository: reviewRepository, appDataRepository: appData)
+            #expect(appData.lastScrapedDates[appID] == Date())
+        }
+    }
+
+    @Test("Test scraping works with just one page")
+    func testScrapingOnePage() async throws {
+
+    }
+
+    @Test("Test we don't save reviews that should have already been scraped")
+    func testScrapingAlreadyScraped() async throws {
+
+    }
+
+    @Test("Test scraping pagination with pages that have already been scraped")
+    func testScrapingPaginationAlreadyScraped() async throws {
+
+    }
+
+    func configureForTests(app: Application) async throws {
+        app.clients.use { _ in
+            fakeClient
+        }
+
+        try routes(app, reviewRepository: reviewRepository, appDataRepository: appData)
     }
 }

@@ -1,39 +1,32 @@
 export interface TimeLimitOption {
   value: number; // seconds
   label: string;
-  description: string;
 }
 
 export const TIME_LIMIT_OPTIONS: TimeLimitOption[] = [
   {
     value: 48 * 60 * 60, // 48 hours in seconds
     label: '48 hours',
-    description: 'Reviews from the last 2 days'
   },
   {
     value: 3 * 24 * 60 * 60, // 3 days in seconds
     label: '3 days',
-    description: 'Reviews from the last 3 days'
   },
   {
     value: 5 * 24 * 60 * 60, // 5 days in seconds
     label: '5 days',
-    description: 'Reviews from the last 5 days'
   },
   {
     value: 7 * 24 * 60 * 60, // 1 week in seconds
     label: '1 week',
-    description: 'Reviews from the last week'
   },
   {
     value: 30 * 24 * 60 * 60, // 1 month in seconds
     label: '1 month',
-    description: 'Reviews from the last month'
   },
   {
     value: 6 * 30 * 24 * 60 * 60, // 6 months in seconds (approximately)
     label: '6 months',
-    description: 'Reviews from the last 6 months'
   }
 ];
 

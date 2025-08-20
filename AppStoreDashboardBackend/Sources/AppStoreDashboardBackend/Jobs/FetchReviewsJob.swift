@@ -21,33 +21,17 @@ struct FetchReviewsJob: AsyncScheduledJob {
         let lastUpdated = try await appDataRepository.getLastScrapedDate(appId: appID)
         // Need to handle pagination if there are more reviews than the first page
         let reviews = try response.content.decode(FeedResponse.self, as: .json).feed.entry.sorted {
-            $0.updated.label > $1.updated.label
+            $0.updated > $1.updated
         }.filter {
             if let lastUpdated {
-                guard let date = ISO8601DateFormatter().date(from: $0.updated.label) else {
-                    logger.warning("Could not convert review date from ISO8601", metadata: ["reviewDate": "\($0.updated.label)"])
-                    return false
-                }
-                return date > lastUpdated
+                return $0.updated > lastUpdated
             } else {
                 return true
             }
         }
 
         for review in reviews {
-            guard let id = Int(review.id.label) else {
-                logger.warning("Could not convert review ID to Int", metadata: ["reviewID": "\(review.id.label)"])
-                continue
-            }
-            guard let score = Int(review.rating.label) else {
-                logger.warning("Could not convert review rating to Int", metadata: ["reviewRating": "\(review.rating.label)", "reviewID": "\(review.id.label)"])
-                continue
-            }
-            guard let date = ISO8601DateFormatter().date(from: review.updated.label) else {
-                logger.warning("Could not convert review date from ISO8601", metadata: ["reviewDate": "\(review.updated.label)", "reviewID": "\(review.id.label)"])
-                continue
-            }
-            let reviewModel = Review(id: id, content: review.content.label, score: score, reviewDate: date, author: review.author.name.label, reviewLink: review.link.attributes.href, appID: self.appID)
+            let reviewModel = Review(id: review.id, content: review.content.label, score: review.rating, reviewDate: review.updated, author: review.author.name, reviewLink: review.link.attributes.href, appID: self.appID)
             try await reviewRepository.save(reviewModel)
         }
 

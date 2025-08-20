@@ -23,10 +23,10 @@ struct Author: Codable {
 
 struct Entry: Codable {
     let author: EntryAuthor
-    let updated: LabelValue
-    let rating: LabelValue
+    let updated: Date
+    let rating: Int
     let version: LabelValue
-    let id: LabelValue
+    let id: Int
     let title: LabelValue
     let content: ReviewContent
     let link: Link
@@ -42,12 +42,54 @@ struct Entry: Codable {
         case contentType = "im:contentType"
         case voteCount = "im:voteCount"
     }
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.author = try container.decode(EntryAuthor.self, forKey: .author)
+        let updatedWrapper = try container.decode(LabelValue.self, forKey: .updated)
+        guard let updatedDate = ISO8601DateFormatter().date(from: updatedWrapper.label) else {
+            throw DecodingError.dataCorruptedError(forKey: .updated,
+                                                   in: container,
+                                                   debugDescription: "Updated date is not in ISO8601 format")
+        }
+        self.updated = updatedDate
+        let idWrapper = try container.decode(LabelValue.self, forKey: .id)
+        guard let idInt = Int(idWrapper.label) else {
+            throw DecodingError.dataCorruptedError(forKey: .id,
+                                                   in: container,
+                                                   debugDescription: "ID is not an Int")
+        }
+        self.id = idInt
+        self.title = try container.decode(LabelValue.self, forKey: .title)
+        self.content = try container.decode(ReviewContent.self, forKey: .content)
+        self.link = try container.decode(Link.self, forKey: .link)
+        let ratingWrapper = try container.decode(LabelValue.self, forKey: .rating)
+        guard let ratingInt = Int(ratingWrapper.label) else {
+            throw DecodingError.dataCorruptedError(forKey: .rating,
+                                                   in: container,
+                                                   debugDescription: "Rating is not an Int")
+        }
+        self.rating = ratingInt
+
+        self.version = try container.decode(LabelValue.self, forKey: .version)
+        self.voteSum = try container.decode(LabelValue.self, forKey: .voteSum)
+        self.contentType = try container.decode(ContentType.self, forKey: .contentType)
+        self.voteCount = try container.decode(LabelValue.self, forKey: .voteCount)
+    }
 }
 
 struct EntryAuthor: Codable {
     let uri: LabelValue
-    let name: LabelValue
+    let name: String
     let label: String
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.uri = try container.decode(LabelValue.self, forKey: .uri)
+        let nameWrapper = try container.decode(LabelValue.self, forKey: .name)
+        self.name = nameWrapper.label
+        self.label = try container.decode(String.self, forKey: .label)
+    }
 }
 
 struct ReviewContent: Codable {

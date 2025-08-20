@@ -41,7 +41,7 @@ struct AppStoreDashboardBackendTests {
     @Test("Test we don't save reviews that should have already been scraped")
     func testScrapingAlreadyScraped() async throws {
         try await withApp(configure: configureForTests) { app in
-            fakeClient.queuedResponses = [firstPageResponse]
+            fakeClient.queuedResponses = [firstPageResponse, lastPageResponse]
 
             try await FetchReviewsJob(appID: appID).getLatestReviews(client: app.client, logger: app.logger, reviewRepository: reviewRepository, appDataRepository: appData)
             let lastScrapedDate = try #require(appData.lastScrapedDates[appID])
@@ -50,7 +50,7 @@ struct AppStoreDashboardBackendTests {
             #expect(fakeClient.requests.count == 2)
 
             // Set up the client again as we've already popped all the responses
-            fakeClient.queuedResponses = [firstPageResponse]
+            fakeClient.queuedResponses = [firstPageResponse, lastPageResponse]
             try await FetchReviewsJob(appID: appID).getLatestReviews(client: app.client, logger: app.logger, reviewRepository: reviewRepository, appDataRepository: appData)
             #expect(reviewRepository.reviews.count == 100)
             let lastScrapedDate2 = try #require(appData.lastScrapedDates[appID])
